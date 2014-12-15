@@ -11,12 +11,13 @@ def validate_pin(pin):
   return pin == "1234"
 
 def open_door():
+  print('start opening door')
   with open("/sys/class/gpio/gpio55/value", mode='w') as f:
-    print('start opening door')
     f.write("1")
-    time.sleep(5);
+  time.sleep(5);
+  with open("/sys/class/gpio/gpio55/value", mode='w') as f:
     f.write("0")
-    print('end opening door')
+  print('end opening door')
   return
 
 def show_image(img):
@@ -176,7 +177,7 @@ def receive_sms_loop(serial_gsm, serial_printer):
         open_door()
         show_access_control()
         print_access_granted(serial_printer, number)
-      else:
+      elif pin != "":
         print("access denied!")
         show_access_denied()
         print_access_denied(serial_printer, number)
